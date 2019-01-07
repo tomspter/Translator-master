@@ -7,6 +7,11 @@
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
     <!--<user-permission android:name="android.permission.VIBRATE"/>-->
+    <!-- 往SDCard写入数据权限 -->
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <!--请求访问使用照相设备-->
+    <uses-permission android:name="android.permission.CAMERA" />
+
 
     <application
         android:allowBackup="true"
@@ -45,6 +50,19 @@
             android:theme="@style/AppTheme.NoActionBar"
             android:launchMode="singleTop" />
 
+        <provider
+            android:name="android.support.v4.content.FileProvider"
+            android:authorities="com.marktony.translator.fileprovider"
+            android:exported="false"
+            android:grantUriPermissions="true">
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/file_paths" />
+        </provider>
+
     </application>
+
+
+
 
 </manifest>
