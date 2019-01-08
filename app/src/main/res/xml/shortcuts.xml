@@ -9,9 +9,9 @@
         android:shortcutShortLabel="@string/check_notebook">
 
         <intent
-            android:action="com.marktony.translator.notebook"
-            android:targetClass="com.marktony.translator.ui.MainActivity"
-            android:targetPackage="com.marktony.translator" />
+            android:action="com.tomspter.translator.notebook"
+            android:targetClass="com.tomspter.translator.ui.MainActivity"
+            android:targetPackage="com.tomspter.translator" />
 
         <categories android:name="android.shortcut.conversation" />
 
@@ -25,9 +25,9 @@
         android:shortcutShortLabel="@string/daily_one">
 
         <intent
-            android:action="com.marktony.translator.dailyone"
-            android:targetClass="com.marktony.translator.ui.MainActivity"
-            android:targetPackage="com.marktony.translator" />
+            android:action="com.tomspter.translator.dailyone"
+            android:targetClass="com.tomspter.translator.ui.MainActivity"
+            android:targetPackage="com.tomspter.translator" />
 
         <categories android:name="android.shortcut.conversation" />
 
@@ -42,8 +42,8 @@
 
         <intent
             android:action="android.intent.action.VIEW"
-            android:targetClass="com.marktony.translator.ui.SearchActivity"
-            android:targetPackage="com.marktony.translator" />
+            android:targetClass="com.tomspter.translator.ui.SearchActivity"
+            android:targetPackage="com.tomspter.translator" />
 
         <categories android:name="android.shortcut.conversation" />
 
