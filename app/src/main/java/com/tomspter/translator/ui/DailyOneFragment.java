@@ -5,10 +5,12 @@ import android.content.ClipboardManager;
 import android.content.ContentValues;
 import android.content.Intent;
 import android.content.res.Configuration;
+import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -30,6 +32,8 @@ import com.tomspter.translator.db.NotebookDatabaseHelper;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.IOException;
+
 import static android.content.Context.CLIPBOARD_SERVICE;
 
 
@@ -43,12 +47,17 @@ public class DailyOneFragment extends Fragment {
     private ImageView ivStar;
     private ImageView ivCopy;
     private ImageView ivShare;
+    private ImageView ivSound;
+
 
     private Boolean isMarked = false;
 
     private NotebookDatabaseHelper dbHelper;
 
     private String imageUrl = null;
+
+    private String soundPath=null;
+
 
     public DailyOneFragment() {
 
@@ -120,19 +129,42 @@ public class DailyOneFragment extends Fragment {
             }
         });
 
+        ivSound.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                final MediaPlayer mediaPlayer=new MediaPlayer();
+                try {
+                    mediaPlayer.setDataSource(soundPath);
+                    mediaPlayer.prepareAsync();
+                    mediaPlayer.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
+                        @Override
+                        public void onPrepared(MediaPlayer mp) {
+                            mediaPlayer.start();
+                            Log.i("sound", "onPrepared: 播放成功");
+                        }
+                    });
+                } catch (IOException e) {
+                    e.printStackTrace();
+                    Log.i("sound", "onClick: 播放失败");
+                }finally {
+                    mediaPlayer.stop();
+                }
+            }
+        });
+
         return view;
     }
 
     private void initViews(View view) {
 
-        textViewEng = (TextView) view.findViewById(R.id.text_view_eng);
-        textViewChi = (TextView) view.findViewById(R.id.text_view_chi);
-        imageViewMain = (ImageView) view.findViewById(R.id.image_view_daily);
+        textViewEng =view.findViewById(R.id.text_view_eng);
+        textViewChi =view.findViewById(R.id.text_view_chi);
+        imageViewMain =view.findViewById(R.id.image_view_daily);
 
-        ivStar = (ImageView) view.findViewById(R.id.image_view_mark_star);
-        ivCopy = (ImageView) view.findViewById(R.id.image_view_copy);
-        ivShare = (ImageView) view.findViewById(R.id.image_view_share);
-
+        ivStar =view.findViewById(R.id.image_view_mark_star);
+        ivCopy =view.findViewById(R.id.image_view_copy);
+        ivShare =view.findViewById(R.id.image_view_share);
+        ivSound=view.findViewById(R.id.image_view_sound);
     }
 
     /**
@@ -145,6 +177,8 @@ public class DailyOneFragment extends Fragment {
                 try {
 
                     imageUrl = jsonObject.getString("picture2");
+
+                    soundPath=jsonObject.getString("tts");
 
                     //Glide图片加载
                     Glide.with(getActivity())
