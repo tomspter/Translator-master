@@ -57,20 +57,21 @@ public class MainActivity extends AppCompatActivity
     private DailyOneFragment dailyOneFragment;
     private TranslateFragment translateFragment;
 
-    private static final String ACTION_NOTEBOOK = "com.marktony.translator.notebook";
-    private static final String ACTION_DAILY_ONE = "com.marktony.translator.dailyone";
+    private static final String ACTION_NOTEBOOK = "com.tomspter.translator.notebook";
+    private static final String ACTION_DAILY_ONE = "com.tomspter.translator.dailyone";
 
     //    private BingModel model;
     private YouDaoModel model;
     private String result = null;
     private RequestQueue queue;
 
+    private Boolean showNotification;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        YouDaoApplication.init(this,Constants.YOUDAO_KEY);
+        YouDaoApplication.init(this, Constants.YOUDAO_KEY);
 
 
         initViews();
@@ -111,6 +112,7 @@ public class MainActivity extends AppCompatActivity
 
         //剪贴板粘贴功能
         clipboardCopy();
+        Log.i("tttt", "onCreate: " + showNotification);
 
         // 基础控件换肤初始化
         SkinCompatManager.withoutActivity(getApplication())
@@ -258,33 +260,21 @@ public class MainActivity extends AppCompatActivity
      * 监听剪贴板
      */
     private void clipboardCopy() {
-        final ClipboardManager clipboardManager = (ClipboardManager) getSystemService(CLIPBOARD_SERVICE);
-        if (clipboardManager != null) {
-            clipboardManager.addPrimaryClipChangedListener(new ClipboardManager.OnPrimaryClipChangedListener() {
-                @Override
-                public void onPrimaryClipChanged() {
-//                    ClipData clipData=clipboardManager.getPrimaryClip();
-//                    ClipData.Item item= null;
-//                    if (clipData != null) {
-//                        item = clipData.getItemAt(0);
-//                    }
-//                    String search= null;
-//                    if (item != null) {
-//                        search = item.getText().toString();
-//                    }
-//                    Log.i("clipboard1", "onPrimaryClipChanged: "+search);
-//                    sendReq(search);
-                    if (clipboardManager.hasPrimaryClip() && clipboardManager.getPrimaryClip().getItemCount() > 0) {
-                        CharSequence search = clipboardManager.getPrimaryClip().getItemAt(0).getText();
-                        if (search != null) {
-                            Log.d("clipboard1", "copied text: " + search);
-                            sendReq(search.toString());
+            final ClipboardManager clipboardManager = (ClipboardManager) getSystemService(CLIPBOARD_SERVICE);
+            if (clipboardManager != null) {
+                clipboardManager.addPrimaryClipChangedListener(new ClipboardManager.OnPrimaryClipChangedListener() {
+                    @Override
+                    public void onPrimaryClipChanged() {
+                        if (clipboardManager.hasPrimaryClip() && clipboardManager.getPrimaryClip().getItemCount() > 0) {
+                            CharSequence search = clipboardManager.getPrimaryClip().getItemAt(0).getText();
+                            if (search != null&&showNotification) {
+                                Log.d("clipboard1", "copied text: " + search);
+                                sendReq(search.toString());
+                            }
                         }
                     }
-                }
-            });
-        }
-        ;
+                });
+            }
     }
 
     /**
@@ -395,9 +385,9 @@ public class MainActivity extends AppCompatActivity
     @Override
     protected void onResume() {
         super.onResume();
-        SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(this);
-//        showWebTran = sp.getBoolean("showWebTran", false);
-
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+        showNotification = sharedPreferences.getBoolean("showNotification", false);
+        Log.i("tttt", "onResume: showNotification"+showNotification);
     }
 }
 

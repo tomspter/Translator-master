@@ -8,9 +8,14 @@
             android:key="showWebTran"
             android:title="@string/show_samples" />
 
-        <android.support.v7.preference.SwitchPreference
-            android:key="changeTheme"
-            android:title="@string/change_theme" />
+        <!--<android.support.v7.preference.SwitchPreference-->
+            <!--android:key="changeTheme"-->
+            <!--android:title="@string/change_theme" />-->
+
+        <android.support.v7.preference.CheckBoxPreference
+            android:defaultValue="false"
+            android:key="showNotification"
+            android:title="@string/show_notification" />
 
     </android.support.v7.preference.PreferenceCategory>
 

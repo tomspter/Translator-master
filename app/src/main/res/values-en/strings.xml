@@ -54,5 +54,6 @@
     <string name="copy_notdone">Text not copied</string>
     <string name="change_theme">Change Theme</string>
     <string name="OCR">OCR</string>
+    <string name="show_notification">show notification translation</string>
 
 </resources>

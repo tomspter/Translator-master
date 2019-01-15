@@ -12,7 +12,7 @@
         android:layout_gravity="bottom|end"
         android:layout_margin="@dimen/fab_margin"
         android:src="@drawable/ic_mode_edit_white_24dp"
-        app:layout_behavior="com.marktony.translator.view.FabHideOnScroll" />
+        app:layout_behavior="com.tomspter.translator.view.FabHideOnScroll" />
 
     <com.scwang.smartrefresh.layout.SmartRefreshLayout xmlns:app="http://schemas.android.com/apk/res-auto"
         android:id="@+id/refreshLayout"

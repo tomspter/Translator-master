@@ -55,4 +55,6 @@ public class Constants {
     public final static int CAMERA_REQUEST_CODE = 0;
     // 相册选择回传码
     public final static int GALLERY_REQUEST_CODE = 1;
+
+    public final static String UNSPLASH_URL="https://source.unsplash.com/random/";
 }

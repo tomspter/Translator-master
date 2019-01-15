@@ -617,6 +617,7 @@ public class TranslateFragment extends Fragment {
         super.onResume();
         SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(getActivity());
         showWebTran = sp.getBoolean("showWebTran", false);
+        Log.i("tttt", "onResume: showWebTran" + showWebTran);
 //        if (samples != null) {
 //            samples.clear();
 //        }
@@ -632,7 +633,7 @@ public class TranslateFragment extends Fragment {
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
             //第二个参数为 包名.fileprovider
-            uri = FileProvider.getUriForFile(getContext(), "com.marktony.translator.fileprovider", cameraSavePath);
+            uri = FileProvider.getUriForFile(getContext(), "com.tomspter.translator.fileprovider", cameraSavePath);
             intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
         } else {
             uri = Uri.fromFile(cameraSavePath);

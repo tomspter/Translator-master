@@ -52,6 +52,7 @@
     <string name="show_samples">显示网络释义</string>
     <string name="change_theme">切换主题</string>
     <string name="OCR">OCR</string>
+    <string name="show_notification">通知栏翻译显示</string>
 
 
 </resources>

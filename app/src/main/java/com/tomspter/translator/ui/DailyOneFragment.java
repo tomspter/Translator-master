@@ -24,6 +24,8 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.bumptech.glide.signature.StringSignature;
 import com.tomspter.translator.R;
 import com.tomspter.translator.constant.Constants;
 import com.tomspter.translator.db.DBUtil;
@@ -54,7 +56,8 @@ public class DailyOneFragment extends Fragment {
 
     private NotebookDatabaseHelper dbHelper;
 
-    private String imageUrl = null;
+//    private String imageUrl = null;
+
 
     private String soundPath=null;
 
@@ -152,6 +155,14 @@ public class DailyOneFragment extends Fragment {
             }
         });
 
+        imageViewMain.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                requestData();
+                Log.i("picture", "onClick: 刷新图片");
+            }
+        });
+
         return view;
     }
 
@@ -176,18 +187,27 @@ public class DailyOneFragment extends Fragment {
             public void onResponse(JSONObject jsonObject) {
                 try {
 
-                    imageUrl = jsonObject.getString("picture2");
+//                    imageUrl = jsonObject.getString("picture2");
+
+                    //设置时间戳
+                    String updateTime = String.valueOf(System.currentTimeMillis());
 
                     soundPath=jsonObject.getString("tts");
 
                     //Glide图片加载
                     Glide.with(getActivity())
-                            .load(imageUrl)
+                            .load(Constants.UNSPLASH_URL)
+//                            .crossFade()
                             .asBitmap()
-                            .centerCrop()
+                            .fitCenter()
+//                            .centerCrop()
+//                            .skipMemoryCache(true)
+                            .diskCacheStrategy(DiskCacheStrategy.NONE)
+                            .signature(new StringSignature(updateTime))
                             .error(R.drawable.notfound_picture)
                             .into(imageViewMain);
 
+                    //填充文字
                     textViewEng.setText(jsonObject.getString("content"));
                     textViewChi.setText(jsonObject.getString("note"));
 
@@ -206,27 +226,34 @@ public class DailyOneFragment extends Fragment {
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError volleyError) {
-
+                Log.i("网络请求失败", "onErrorResponse: netWork Failed");
             }
         });
 
         queue.add(request);
     }
 
+    /**
+     * 屏幕状态监听
+     * @param newConfig
+     */
     @Override
     public void onConfigurationChanged(Configuration newConfig) {
         super.onConfigurationChanged(newConfig);
+        imageViewMain.setScaleType(ImageView.ScaleType.CENTER_CROP);
+        requestData();
 
-        if (imageUrl != null) {
+    }
 
-            imageViewMain.setScaleType(ImageView.ScaleType.CENTER_CROP);
 
-            Glide.with(getActivity())
-                    .load(imageUrl)
-                    .asBitmap()
-                    .error(R.drawable.notfound_picture)
-                    .into(imageViewMain);
-        }
-
+    /**
+     * Fragment隐藏
+     * @param hidden
+     */
+    @Override
+    public void onHiddenChanged(boolean hidden) {
+        super.onHiddenChanged(hidden);
+        imageViewMain.setScaleType(ImageView.ScaleType.CENTER_CROP);
+        requestData();
     }
 }

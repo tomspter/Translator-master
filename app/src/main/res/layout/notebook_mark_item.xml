@@ -7,8 +7,11 @@
     android:layout_marginTop="@dimen/card_view_horizontal_margin"
     android:layout_marginRight="@dimen/card_view_horizontal_margin"
     card_view:cardBackgroundColor="@color/colorPrimary"
-    card_view:cardCornerRadius="2dp"
-    card_view:cardUseCompatPadding="false">
+    card_view:cardCornerRadius="10dp"
+    card_view:cardUseCompatPadding="false"
+    android:foreground="?attr/selectableItemBackgroundBorderless"
+    android:clickable="true"
+    >
 
     <LinearLayout
         android:layout_width="match_parent"
